@@ -15,6 +15,7 @@ import {
   ChevronDown,
   ChevronUp,
   Check,
+  Rocket,
 } from 'lucide-react'
 import type { Decision, LLMSettings, ChatMessage, BrainstormItem } from '../types'
 import {
@@ -22,6 +23,7 @@ import {
   brainstormArguments,
   SYSTEM_PROMPT_ANALYST,
   SYSTEM_PROMPT_DEVIL,
+  SYSTEM_PROMPT_VISIONARY,
 } from '../services/llmService'
 
 interface AIAssistantDrawerProps {
@@ -137,8 +139,14 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
 
   // Action: Devil's Advocate
   const handleRunDevilsAdvocate = () => {
-    const prompt = 'Activate "Devil\'s Advocate" mode. Pressure-test my assumptions, expose cognitive biases, point out exaggerated or understated weights, and conduct a pre-mortem.'
+    const prompt = 'Activate "Devil\'s Advocate" mode. Pressure-test my assumptions, expose cognitive biases, point out exaggerated or understated weights, and outline concrete risk hedges.'
     handleSendMessage(prompt, SYSTEM_PROMPT_DEVIL)
+  }
+
+  // Action: Visionary / Opportunity Hunter
+  const handleRunVisionary = () => {
+    const prompt = 'Activate "Visionary / Opportunity Hunter" mode. Identify the hidden asymmetric upside, construct the best-case triumph scenario, show how to reframe key Cons into stepping stones, and propose an ambitious high-conviction first step.'
+    handleSendMessage(prompt, SYSTEM_PROMPT_VISIONARY)
   }
 
   // Action: Brainstorm Arguments
@@ -279,6 +287,15 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
         >
           <Flame className="w-3.5 h-3.5 text-rose-500" />
           <span>Devil's Advocate</span>
+        </button>
+
+        <button
+          onClick={handleRunVisionary}
+          disabled={isLoading}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-zinc-100 dark:bg-zinc-800/80 text-zinc-800 dark:text-zinc-200 hover:bg-cyan-600 hover:text-white dark:hover:bg-cyan-600 transition-all shadow-sm"
+        >
+          <Rocket className="w-3.5 h-3.5 text-cyan-500" />
+          <span>Visionary</span>
         </button>
       </div>
 

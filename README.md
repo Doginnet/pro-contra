@@ -37,7 +37,8 @@ A non-intrusive right slide-out panel that lets you consult AI without losing si
 
 - 📊 **Deep Analysis**: Objective strategic assessment, reversible vs irreversible risk evaluation, and high-leverage closing questions.
 - 💡 **Brainstorm Factors**: AI identifies overlooked blind spots and surfaces candidate reasons. Add any suggested card to your board in **1 click**!
-- 😈 **Devil's Advocate**: Rigorously challenges your assumptions, audits subjective weights, detects cognitive biases (*loss aversion, optimism bias, status quo bias*), and runs a pre-mortem failure simulation.
+- 😈 **Devil's Advocate**: Rigorously challenges your assumptions, audits subjective weights, detects cognitive biases (*loss aversion, optimism bias, status quo bias*), and offers constructive risk hedges.
+- 🚀 **Visionary (Optimist)**: Illuminates the exponential asymmetric upside, designs a 2-year triumph blueprint, reframes top fears into stepping stones, and outlines an ambitious high-conviction first step.
 - 💬 **Ephemeral Multi-Turn Dialogue**: Ask follow-up questions, introduce new nuances, or discuss trade-offs. The chat session remains active in memory and resets on demand.
 - 🌍 **Multilingual Intelligence**: Write in **any language** (Russian, English, Spanish, German, etc.) — the AI automatically matches your language for all responses and brainstorm cards.
 
