@@ -12,6 +12,9 @@ import {
   Bot,
   User,
   Settings,
+  ChevronDown,
+  ChevronUp,
+  Check,
 } from 'lucide-react'
 import type { Decision, LLMSettings, ChatMessage, BrainstormItem } from '../types'
 import {
@@ -45,8 +48,8 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
   const [inputText, setInputText] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [loadingAction, setLoadingAction] = useState<string>('')
-  const [brainstormItems, setBrainstormItems] = useState<BrainstormItem[]>([])
   const [addedItemIds, setAddedItemIds] = useState<Set<string>>(new Set())
+  const [collapsedMsgIds, setCollapsedMsgIds] = useState<Set<string>>(new Set())
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -58,12 +61,23 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
     if (isOpen) {
       scrollToBottom()
     }
-  }, [chatHistory, isOpen, brainstormItems])
+  }, [chatHistory, isOpen])
 
   // Clear current ephemeral chat
   const handleClearChat = () => {
     setChatHistory([])
-    setBrainstormItems([])
+  }
+
+  const toggleCollapse = (msgId: string) => {
+    setCollapsedMsgIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(msgId)) {
+        next.delete(msgId)
+      } else {
+        next.add(msgId)
+      }
+      return next
+    })
   }
 
   // Generic message sender
@@ -134,15 +148,15 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
     setLoadingAction('AI is brainstorming overlooked PRO and CONTRA factors...')
     try {
       const items = await brainstormArguments(decision, settings)
-      setBrainstormItems(items)
 
       setChatHistory((prev) => [
         ...prev,
         {
           id: `msg_${Date.now()}_brainstorm`,
           role: 'assistant',
-          content: `💡 Generated **${items.length}** candidate arguments below. You can add them to your board with 1 click:`,
+          content: `💡 Suggested **${items.length}** candidate arguments based on your current board:`,
           timestamp: Date.now(),
+          brainstormItems: items,
         },
       ])
     } catch (error: any) {
@@ -268,9 +282,9 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
         </button>
       </div>
 
-      {/* Messages Thread & Brainstorm items */}
+      {/* Messages Thread */}
       <div className="flex-1 overflow-y-auto p-5 space-y-4">
-        {chatHistory.length === 0 && brainstormItems.length === 0 ? (
+        {chatHistory.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center py-10 px-4">
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-violet-600/20 to-indigo-600/20 flex items-center justify-center text-violet-600 dark:text-violet-400 mb-3 border border-violet-500/20">
               <Bot className="w-6 h-6" />
@@ -283,110 +297,152 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
             </p>
           </div>
         ) : (
-          chatHistory.map((msg) => (
-            <div
-              key={msg.id}
-              className={`flex gap-3 text-xs leading-relaxed ${
-                msg.role === 'user' ? 'justify-end' : 'justify-start'
-              }`}
-            >
-              {msg.role !== 'user' && (
-                <div className="w-7 h-7 rounded-lg bg-violet-600/15 text-violet-600 dark:text-violet-400 flex items-center justify-center flex-shrink-0 mt-0.5 border border-violet-500/20">
-                  <Bot className="w-4 h-4" />
-                </div>
-              )}
+          chatHistory.map((msg) => {
+            const hasBrainstorm = msg.brainstormItems && msg.brainstormItems.length > 0
+            const isCollapsed = collapsedMsgIds.has(msg.id)
 
+            return (
               <div
-                className={`rounded-2xl p-3.5 max-w-[85%] ${
-                  msg.role === 'user'
-                    ? 'bg-violet-600 text-white rounded-tr-sm'
-                    : msg.isError
-                    ? 'bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 rounded-tl-sm'
-                    : 'bg-zinc-100 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-800 rounded-tl-sm'
+                key={msg.id}
+                className={`flex gap-3 text-xs leading-relaxed ${
+                  msg.role === 'user' ? 'justify-end' : 'justify-start'
                 }`}
               >
-                <div className="whitespace-pre-wrap font-sans text-xs space-y-2">
-                  {msg.content}
-                </div>
+                {msg.role !== 'user' && (
+                  <div className="w-7 h-7 rounded-lg bg-violet-600/15 text-violet-600 dark:text-violet-400 flex items-center justify-center flex-shrink-0 mt-0.5 border border-violet-500/20">
+                    <Bot className="w-4 h-4" />
+                  </div>
+                )}
+
                 <div
-                  className={`text-[9px] mt-1.5 font-mono ${
-                    msg.role === 'user' ? 'text-white/60 text-right' : 'text-zinc-400'
+                  className={`rounded-2xl p-3.5 ${
+                    hasBrainstorm ? 'w-full max-w-[95%]' : 'max-w-[85%]'
+                  } ${
+                    msg.role === 'user'
+                      ? 'bg-violet-600 text-white rounded-tr-sm'
+                      : msg.isError
+                      ? 'bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 rounded-tl-sm'
+                      : 'bg-zinc-100 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-800 rounded-tl-sm'
                   }`}
                 >
-                  {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </div>
-              </div>
+                  <div className="whitespace-pre-wrap font-sans text-xs space-y-2">
+                    {msg.content}
+                  </div>
 
-              {msg.role === 'user' && (
-                <div className="w-7 h-7 rounded-lg bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <User className="w-4 h-4" />
-                </div>
-              )}
-            </div>
-          ))
-        )}
+                  {/* Inline Brainstorm Cards attached to this specific message */}
+                  {hasBrainstorm && (
+                    <div className="mt-3 pt-3 border-t border-zinc-200 dark:border-zinc-800/80">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
+                          <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
+                          <span>Candidate Factors ({msg.brainstormItems!.length})</span>
+                        </span>
 
-        {/* Brainstorm cards tray */}
-        {brainstormItems.length > 0 && (
-          <div className="space-y-2.5 pt-2">
-            <h5 className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 flex items-center gap-1.5">
-              <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
-              <span>Suggested Arguments:</span>
-            </h5>
-            <div className="grid grid-cols-1 gap-2">
-              {brainstormItems.map((item) => {
-                const isAdded = addedItemIds.has(item.id)
-                const isPro = item.type === 'pro'
-                return (
-                  <div
-                    key={item.id}
-                    className={`p-3 rounded-xl border text-xs flex flex-col justify-between gap-2 transition-all ${
-                      isPro
-                        ? 'bg-emerald-500/5 border-emerald-500/20'
-                        : 'bg-rose-500/5 border-rose-500/20'
-                    }`}
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span
-                            className={`px-1.5 py-0.5 rounded text-[10px] font-bold font-mono ${
-                              isPro
-                                ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
-                                : 'bg-rose-500/15 text-rose-600 dark:text-rose-400'
-                            }`}
-                          >
-                            {isPro ? 'PRO (FOR)' : 'CONTRA (AGAINST)'} • {item.suggestedWeight}/10
-                          </span>
-                        </div>
-                        <p className="font-medium text-zinc-900 dark:text-zinc-100">{item.text}</p>
-                        {item.rationale && (
-                          <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 italic">
-                            {item.rationale}
-                          </p>
-                        )}
+                        <button
+                          type="button"
+                          onClick={() => toggleCollapse(msg.id)}
+                          className="flex items-center gap-1 text-[11px] text-violet-600 dark:text-violet-400 hover:underline px-1 py-0.5"
+                        >
+                          {isCollapsed ? (
+                            <>
+                              <span>Show</span>
+                              <ChevronDown className="w-3 h-3" />
+                            </>
+                          ) : (
+                            <>
+                              <span>Collapse</span>
+                              <ChevronUp className="w-3 h-3" />
+                            </>
+                          )}
+                        </button>
                       </div>
 
-                      <button
-                        onClick={() => handleAddBrainstormCard(item)}
-                        disabled={isAdded}
-                        className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold flex-shrink-0 transition-all ${
-                          isAdded
-                            ? 'bg-zinc-200 dark:bg-zinc-800 text-zinc-400 cursor-default'
-                            : isPro
-                            ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
-                            : 'bg-rose-600 hover:bg-rose-500 text-white'
-                        }`}
-                      >
-                        <Plus className="w-3.5 h-3.5" />
-                        <span>{isAdded ? 'Added' : 'Add to List'}</span>
-                      </button>
+                      {!isCollapsed && (
+                        <div className="grid grid-cols-1 gap-2 mt-2">
+                          {msg.brainstormItems!.map((item) => {
+                            const isAdded = addedItemIds.has(item.id)
+                            const isPro = item.type === 'pro'
+                            return (
+                              <div
+                                key={item.id}
+                                className={`p-2.5 rounded-xl border text-xs flex flex-col justify-between gap-1.5 transition-all ${
+                                  isPro
+                                    ? 'bg-emerald-500/5 border-emerald-500/20'
+                                    : 'bg-rose-500/5 border-rose-500/20'
+                                }`}
+                              >
+                                <div className="flex items-start justify-between gap-2">
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 mb-0.5">
+                                      <span
+                                        className={`px-1.5 py-0.5 rounded text-[10px] font-bold font-mono ${
+                                          isPro
+                                            ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
+                                            : 'bg-rose-500/15 text-rose-600 dark:text-rose-400'
+                                        }`}
+                                      >
+                                        {isPro ? 'PRO' : 'CONTRA'} • {item.suggestedWeight}/10
+                                      </span>
+                                    </div>
+                                    <p className="font-medium text-zinc-900 dark:text-zinc-100">
+                                      {item.text}
+                                    </p>
+                                    {item.rationale && (
+                                      <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 italic">
+                                        {item.rationale}
+                                      </p>
+                                    )}
+                                  </div>
+
+                                  <button
+                                    onClick={() => handleAddBrainstormCard(item)}
+                                    disabled={isAdded}
+                                    className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold flex-shrink-0 transition-all ${
+                                      isAdded
+                                        ? 'bg-zinc-200 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 cursor-default'
+                                        : isPro
+                                        ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
+                                        : 'bg-rose-600 hover:bg-rose-500 text-white'
+                                    }`}
+                                  >
+                                    {isAdded ? (
+                                      <>
+                                        <Check className="w-3.5 h-3.5 text-emerald-500" />
+                                        <span>Added</span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <Plus className="w-3.5 h-3.5" />
+                                        <span>Add</span>
+                                      </>
+                                    )}
+                                  </button>
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      )}
                     </div>
+                  )}
+
+                  <div
+                    className={`text-[9px] mt-1.5 font-mono ${
+                      msg.role === 'user' ? 'text-white/60 text-right' : 'text-zinc-400'
+                    }`}
+                  >
+                    {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </div>
-                )
-              })}
-            </div>
-          </div>
+                </div>
+
+                {msg.role === 'user' && (
+                  <div className="w-7 h-7 rounded-lg bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <User className="w-4 h-4" />
+                  </div>
+                )}
+              </div>
+            )
+          })
         )}
 
         {/* Loading Indicator */}

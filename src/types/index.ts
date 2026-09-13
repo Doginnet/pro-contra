@@ -32,6 +32,7 @@ export interface ChatMessage {
   content: string
   timestamp: number
   isError?: boolean
+  brainstormItems?: BrainstormItem[]
 }
 
 export interface BrainstormItem {
