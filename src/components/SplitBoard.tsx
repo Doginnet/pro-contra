@@ -58,7 +58,7 @@ export const SplitBoard: React.FC<SplitBoardProps> = ({
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-5 h-5 text-emerald-500" />
               <h2 className="text-sm font-bold tracking-wide uppercase text-zinc-900 dark:text-zinc-100">
-                PRO • Доводы «ЗА»
+                PRO • Reasons For
               </h2>
               <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-medium font-mono">
                 {pros.length}
@@ -66,7 +66,7 @@ export const SplitBoard: React.FC<SplitBoardProps> = ({
             </div>
 
             <div className="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-lg">
-              <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium">Сумма:</span>
+              <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium">Sum:</span>
               <span className="text-sm font-bold font-mono text-emerald-600 dark:text-emerald-400">
                 {proSum}
               </span>
@@ -80,7 +80,7 @@ export const SplitBoard: React.FC<SplitBoardProps> = ({
                 type="text"
                 value={newProText}
                 onChange={(e) => setNewProText(e.target.value)}
-                placeholder="Добавить аргумент «ЗА»..."
+                placeholder="Add a PRO reason..."
                 className="flex-1 px-3 py-2 text-xs bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-zinc-800 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-600 focus:outline-none focus:border-emerald-500 transition-colors"
               />
               <button
@@ -89,13 +89,13 @@ export const SplitBoard: React.FC<SplitBoardProps> = ({
                 className="flex items-center gap-1 px-3 py-2 text-xs font-semibold rounded-lg text-white bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
               >
                 <Plus className="w-3.5 h-3.5" />
-                <span>Добавить</span>
+                <span>Add</span>
               </button>
             </div>
 
             {newProText.trim() && (
               <div className="flex items-center gap-3 px-1 py-1 bg-emerald-500/5 rounded-lg border border-emerald-500/10">
-                <span className="text-[11px] text-zinc-500 dark:text-zinc-400">Начальный вес:</span>
+                <span className="text-[11px] text-zinc-500 dark:text-zinc-400">Initial weight:</span>
                 <input
                   type="range"
                   min="1"
@@ -116,14 +116,14 @@ export const SplitBoard: React.FC<SplitBoardProps> = ({
             {pros.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-48 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl text-center p-4">
                 <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-2">
-                  Пока нет ни одного довода «ЗА»
+                  No PRO arguments added yet
                 </p>
                 <button
                   onClick={onOpenBrainstorm}
                   className="flex items-center gap-1 text-[11px] text-violet-600 dark:text-violet-400 hover:underline"
                 >
                   <Sparkles className="w-3 h-3" />
-                  <span>Спросить идеи у AI</span>
+                  <span>Brainstorm with AI</span>
                 </button>
               </div>
             ) : (
@@ -149,7 +149,7 @@ export const SplitBoard: React.FC<SplitBoardProps> = ({
             <div className="flex items-center gap-2">
               <XCircle className="w-5 h-5 text-rose-500" />
               <h2 className="text-sm font-bold tracking-wide uppercase text-zinc-900 dark:text-zinc-100">
-                CONTRA • Доводы «ПРОТИВ»
+                CONTRA • Reasons Against
               </h2>
               <span className="text-xs px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-600 dark:text-rose-400 font-medium font-mono">
                 {cons.length}
@@ -157,7 +157,7 @@ export const SplitBoard: React.FC<SplitBoardProps> = ({
             </div>
 
             <div className="flex items-center gap-1.5 bg-rose-500/10 border border-rose-500/20 px-2.5 py-1 rounded-lg">
-              <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium">Сумма:</span>
+              <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium">Sum:</span>
               <span className="text-sm font-bold font-mono text-rose-600 dark:text-rose-400">
                 {contraSum}
               </span>
@@ -171,7 +171,7 @@ export const SplitBoard: React.FC<SplitBoardProps> = ({
                 type="text"
                 value={newContraText}
                 onChange={(e) => setNewContraText(e.target.value)}
-                placeholder="Добавить аргумент «ПРОТИВ»..."
+                placeholder="Add a CONTRA reason..."
                 className="flex-1 px-3 py-2 text-xs bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-zinc-800 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-600 focus:outline-none focus:border-rose-500 transition-colors"
               />
               <button
@@ -180,13 +180,13 @@ export const SplitBoard: React.FC<SplitBoardProps> = ({
                 className="flex items-center gap-1 px-3 py-2 text-xs font-semibold rounded-lg text-white bg-rose-600 hover:bg-rose-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
               >
                 <Plus className="w-3.5 h-3.5" />
-                <span>Добавить</span>
+                <span>Add</span>
               </button>
             </div>
 
             {newContraText.trim() && (
               <div className="flex items-center gap-3 px-1 py-1 bg-rose-500/5 rounded-lg border border-rose-500/10">
-                <span className="text-[11px] text-zinc-500 dark:text-zinc-400">Начальный вес:</span>
+                <span className="text-[11px] text-zinc-500 dark:text-zinc-400">Initial weight:</span>
                 <input
                   type="range"
                   min="1"
@@ -207,14 +207,14 @@ export const SplitBoard: React.FC<SplitBoardProps> = ({
             {cons.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-48 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl text-center p-4">
                 <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-2">
-                  Пока нет ни одного довода «ПРОТИВ»
+                  No CONTRA arguments added yet
                 </p>
                 <button
                   onClick={onOpenBrainstorm}
                   className="flex items-center gap-1 text-[11px] text-violet-600 dark:text-violet-400 hover:underline"
                 >
                   <Sparkles className="w-3 h-3" />
-                  <span>Спросить идеи у AI</span>
+                  <span>Brainstorm with AI</span>
                 </button>
               </div>
             ) : (

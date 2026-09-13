@@ -16,21 +16,12 @@ export const BalanceFooter: React.FC<BalanceFooterProps> = ({
   const { proSum, contraSum, totalSum, proPercent, contraPercent, diff, verdict } = stats
 
   const getVerdictText = () => {
-    if (totalSum === 0) return 'Добавьте аргументы для расчета баланса сил'
-    if (verdict === 'equal') return '⚖️ Абсолютный паритет — силы равны (50% / 50%)'
+    if (totalSum === 0) return 'Add arguments to calculate decision balance'
+    if (verdict === 'equal') return '⚖️ Absolute parity — forces are equal (50% / 50%)'
     if (verdict === 'pro') {
-      return `🏆 Перевес в пользу «ЗА» на +${diff} ${getPluralPoints(diff)} (${proPercent}% против ${contraPercent}%)`
+      return `🏆 Lean towards PRO by +${diff} ${diff === 1 ? 'pt' : 'pts'} (${proPercent}% vs ${contraPercent}%)`
     }
-    return `⚠️ Перевес в пользу «ПРОТИВ» на ${Math.abs(diff)} ${getPluralPoints(Math.abs(diff))} (${contraPercent}% против ${proPercent}%)`
-  }
-
-  function getPluralPoints(n: number) {
-    const abs = Math.abs(n) % 100
-    const rem = abs % 10
-    if (abs > 10 && abs < 20) return 'баллов'
-    if (rem > 1 && rem < 5) return 'балла'
-    if (rem === 1) return 'балл'
-    return 'баллов'
+    return `⚠️ Lean towards CONTRA by ${Math.abs(diff)} ${Math.abs(diff) === 1 ? 'pt' : 'pts'} (${contraPercent}% vs ${proPercent}%)`
   }
 
   return (
@@ -42,7 +33,7 @@ export const BalanceFooter: React.FC<BalanceFooterProps> = ({
           <div className="flex items-center justify-between text-xs mb-1.5 font-medium">
             <div className="flex items-center gap-2">
               <span className="text-emerald-600 dark:text-emerald-400 font-bold font-mono">
-                PRO: {proSum} б. ({totalSum > 0 ? proPercent : 0}%)
+                PRO: {proSum} pts ({totalSum > 0 ? proPercent : 0}%)
               </span>
             </div>
 
@@ -53,7 +44,7 @@ export const BalanceFooter: React.FC<BalanceFooterProps> = ({
 
             <div className="flex items-center gap-2">
               <span className="text-rose-600 dark:text-rose-400 font-bold font-mono">
-                CONTRA: {contraSum} б. ({totalSum > 0 ? contraPercent : 0}%)
+                CONTRA: {contraSum} pts ({totalSum > 0 ? contraPercent : 0}%)
               </span>
             </div>
           </div>
@@ -80,10 +71,10 @@ export const BalanceFooter: React.FC<BalanceFooterProps> = ({
           <button
             onClick={onClearBoard}
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-500 hover:text-rose-600 dark:text-zinc-400 dark:hover:text-rose-400 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors"
-            title="Очистить все аргументы на доске"
+            title="Clear all arguments on the board"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            <span>Очистить</span>
+            <span>Clear</span>
           </button>
 
           <button
@@ -91,7 +82,7 @@ export const BalanceFooter: React.FC<BalanceFooterProps> = ({
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-violet-600 dark:text-violet-400 bg-violet-500/10 hover:bg-violet-500/20 border border-violet-500/20 rounded-lg transition-colors"
           >
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Анализ решения</span>
+            <span>Deep Analysis</span>
           </button>
         </div>
       </div>

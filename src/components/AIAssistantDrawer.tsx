@@ -81,7 +81,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
     setChatHistory(updatedHistory)
     setInputText('')
     setIsLoading(true)
-    setLoadingAction('Генерация ответа...')
+    setLoadingAction('Generating response...')
 
     try {
       const reply = await sendChatMessage(
@@ -104,7 +104,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
       const errorMessage: ChatMessage = {
         id: `msg_${Date.now()}_err`,
         role: 'assistant',
-        content: `⚠️ ${error.message || 'Произошла непредвиденная ошибка при запросе к AI.'}`,
+        content: `⚠️ ${error.message || 'An unexpected error occurred while querying the AI.'}`,
         timestamp: Date.now(),
         isError: true,
       }
@@ -117,13 +117,13 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
 
   // Action: Deep Analysis
   const handleRunAnalysis = () => {
-    const prompt = 'Проведи всесторонний стратегический анализ этого решения. Дай четкий вердикт, оцени веса ключевых аргументов и подсвети скрытые риски.'
+    const prompt = 'Please perform a comprehensive strategic analysis of this decision. Deliver a clear verdict, evaluate the key weighted arguments, assess risk asymmetries, and identify critical blind spots.'
     handleSendMessage(prompt, SYSTEM_PROMPT_ANALYST)
   }
 
   // Action: Devil's Advocate
   const handleRunDevilsAdvocate = () => {
-    const prompt = 'Включи режим «Адвоката дьявола». Разнеси мои предположения, найди когнитивные искажения и задай самые неудобные отрезвляющие вопросы.'
+    const prompt = 'Activate "Devil\'s Advocate" mode. Pressure-test my assumptions, expose cognitive biases, point out exaggerated or understated weights, and conduct a pre-mortem.'
     handleSendMessage(prompt, SYSTEM_PROMPT_DEVIL)
   }
 
@@ -131,18 +131,17 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
   const handleRunBrainstorm = async () => {
     if (isLoading) return
     setIsLoading(true)
-    setLoadingAction('AI подбирает неочевидные аргументы «За» и «Против»...')
+    setLoadingAction('AI is brainstorming overlooked PRO and CONTRA factors...')
     try {
       const items = await brainstormArguments(decision, settings)
       setBrainstormItems(items)
 
-      // Add a helpful note in chat
       setChatHistory((prev) => [
         ...prev,
         {
           id: `msg_${Date.now()}_brainstorm`,
           role: 'assistant',
-          content: `💡 Я сгенерировал **${items.length}** потенциальных аргументов ниже. Вы можете добавить подходящие в 1 клик на свою доску:`,
+          content: `💡 Generated **${items.length}** candidate arguments below. You can add them to your board with 1 click:`,
           timestamp: Date.now(),
         },
       ])
@@ -152,7 +151,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
         {
           id: `msg_${Date.now()}_err`,
           role: 'assistant',
-          content: `⚠️ Не удалось выполнить Brainstorm: ${error.message}`,
+          content: `⚠️ Brainstorm failed: ${error.message}`,
           timestamp: Date.now(),
           isError: true,
         },
@@ -173,7 +172,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
 
   const activeModelDisplay =
     settings.provider === 'gemini'
-      ? settings.geminiModel || 'gemini-2.5-flash'
+      ? settings.geminiModel || 'gemini-3.5-flash'
       : settings.openaiModel || 'gpt-4o-mini'
 
   return (
@@ -196,7 +195,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
               </span>
             </h3>
             <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-              Временная сессия • стирается при сбросе
+              Ephemeral session • resets on clear
             </p>
           </div>
         </div>
@@ -206,7 +205,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
             <button
               onClick={handleClearChat}
               className="p-1.5 text-zinc-400 hover:text-rose-500 dark:hover:text-rose-400 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-              title="Очистить текущий диалог"
+              title="Clear current session chat"
             >
               <RotateCcw className="w-4 h-4" />
             </button>
@@ -215,7 +214,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
           <button
             onClick={onClose}
             className="p-1.5 text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-            title="Закрыть панель"
+            title="Close sidebar"
           >
             <X className="w-4 h-4" />
           </button>
@@ -227,14 +226,14 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
         <div className="m-4 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 text-xs flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <ShieldAlert className="w-4 h-4 flex-shrink-0" />
-            <span>API ключ не указан. Задайте ключ для работы ассистента.</span>
+            <span>API key is missing. Configure your key in Settings.</span>
           </div>
           <button
             onClick={onOpenSettings}
             className="flex items-center gap-1 px-2.5 py-1 bg-amber-500 text-zinc-950 font-semibold rounded-lg text-[11px] hover:bg-amber-400 transition-colors"
           >
             <Settings className="w-3 h-3" />
-            <span>Настройки</span>
+            <span>Settings</span>
           </button>
         </div>
       )}
@@ -247,7 +246,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
           className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-zinc-100 dark:bg-zinc-800/80 text-zinc-800 dark:text-zinc-200 hover:bg-violet-600 hover:text-white dark:hover:bg-violet-600 transition-all shadow-sm"
         >
           <Sparkles className="w-3.5 h-3.5" />
-          <span>Глубокий анализ</span>
+          <span>Deep Analysis</span>
         </button>
 
         <button
@@ -256,7 +255,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
           className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-zinc-100 dark:bg-zinc-800/80 text-zinc-800 dark:text-zinc-200 hover:bg-emerald-600 hover:text-white dark:hover:bg-emerald-600 transition-all shadow-sm"
         >
           <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
-          <span>Brainstorm аргументов</span>
+          <span>Brainstorm Factors</span>
         </button>
 
         <button
@@ -265,7 +264,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
           className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-zinc-100 dark:bg-zinc-800/80 text-zinc-800 dark:text-zinc-200 hover:bg-rose-600 hover:text-white dark:hover:bg-rose-600 transition-all shadow-sm"
         >
           <Flame className="w-3.5 h-3.5 text-rose-500" />
-          <span>Адвокат дьявола</span>
+          <span>Devil's Advocate</span>
         </button>
       </div>
 
@@ -277,10 +276,10 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
               <Bot className="w-6 h-6" />
             </div>
             <h4 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 mb-1">
-              Готов к анализу вашей дилеммы
+              Ready to analyze your decision
             </h4>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-xs leading-relaxed mb-4">
-              Нажмите кнопку выше или задайте любой вопрос. Вся информация из таблицы «За» и «Против» уже загружена в контекст.
+              Click any quick action above or type a question. All PRO & CONTRA arguments and weights are automatically loaded into context.
             </p>
           </div>
         ) : (
@@ -332,7 +331,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
           <div className="space-y-2.5 pt-2">
             <h5 className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 flex items-center gap-1.5">
               <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
-              <span>Предложенные аргументы:</span>
+              <span>Suggested Arguments:</span>
             </h5>
             <div className="grid grid-cols-1 gap-2">
               {brainstormItems.map((item) => {
@@ -357,7 +356,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
                                 : 'bg-rose-500/15 text-rose-600 dark:text-rose-400'
                             }`}
                           >
-                            {isPro ? 'PRO (ЗА)' : 'CONTRA (ПРОТИВ)'} • {item.suggestedWeight}/10
+                            {isPro ? 'PRO (FOR)' : 'CONTRA (AGAINST)'} • {item.suggestedWeight}/10
                           </span>
                         </div>
                         <p className="font-medium text-zinc-900 dark:text-zinc-100">{item.text}</p>
@@ -380,7 +379,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
                         }`}
                       >
                         <Plus className="w-3.5 h-3.5" />
-                        <span>{isAdded ? 'Добавлено' : 'В список'}</span>
+                        <span>{isAdded ? 'Added' : 'Add to List'}</span>
                       </button>
                     </div>
                   </div>
@@ -394,7 +393,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
         {isLoading && (
           <div className="flex items-center gap-2 text-xs text-violet-600 dark:text-violet-400 bg-violet-500/5 p-3 rounded-xl border border-violet-500/10 animate-pulse">
             <Loader2 className="w-4 h-4 animate-spin" />
-            <span>{loadingAction || 'Генерация ответа...'}</span>
+            <span>{loadingAction || 'Generating response...'}</span>
           </div>
         )}
 
@@ -417,8 +416,8 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
             disabled={isLoading || !isKeyConfigured}
             placeholder={
               !isKeyConfigured
-                ? 'Сначала укажите API ключ в настройках...'
-                : 'Задайте вопрос или уточнение для продолжения диалога...'
+                ? 'Configure API Key in Settings first...'
+                : 'Ask a follow-up or add nuance to continue dialogue...'
             }
             className="flex-1 px-3.5 py-2.5 text-xs bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-zinc-800 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-600 focus:outline-none focus:border-violet-500 transition-colors disabled:opacity-50"
           />
@@ -426,7 +425,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
             type="submit"
             disabled={!inputText.trim() || isLoading || !isKeyConfigured}
             className="p-2.5 rounded-xl bg-violet-600 text-white hover:bg-violet-500 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm transition-all"
-            title="Отправить сообщение"
+            title="Send message"
           >
             <Send className="w-4 h-4" />
           </button>

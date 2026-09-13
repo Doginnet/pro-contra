@@ -5,49 +5,53 @@ export function buildDecisionContextPrompt(decision: Decision): string {
   const stats = calculateBalance(decision)
 
   const prosList = decision.pros.length > 0
-    ? decision.pros.map((p, i) => `  ${i + 1}. [Вес: ${p.weight}/10] ${p.text}`).join('\n')
-    : '  (нет добавленных аргументов "За")'
+    ? decision.pros.map((p, i) => `  ${i + 1}. [Weight: ${p.weight}/10] ${p.text}`).join('\n')
+    : '  (no PRO arguments added)'
 
   const consList = decision.cons.length > 0
-    ? decision.cons.map((c, i) => `  ${i + 1}. [Вес: ${c.weight}/10] ${c.text}`).join('\n')
-    : '  (нет добавленных аргументов "Против")'
+    ? decision.cons.map((c, i) => `  ${i + 1}. [Weight: ${c.weight}/10] ${c.text}`).join('\n')
+    : '  (no CONTRA arguments added)'
 
-  return `[ТЕКУЩИЙ КОНТЕКСТ РЕШЕНИЯ]
-Вопрос / Дилемма: ${decision.title || 'Без названия'}
-Контекст и описание: ${decision.description || 'Не указано'}
+  return `[CURRENT DECISION CONTEXT]
+Question / Dilemma: ${decision.title || 'Untitled'}
+Context & Details: ${decision.description || 'Not provided'}
 
-БАЛАНС СИЛ:
-- Сумма PRO (За): ${stats.proSum} баллов (${stats.proPercent}%)
-- Сумма CONTRA (Против): ${stats.contraSum} баллов (${stats.contraPercent}%)
-- Разница: ${stats.diff > 0 ? `+${stats.diff} в пользу PRO` : stats.diff < 0 ? `${stats.diff} в пользу CONTRA` : 'Паритет'}
+BALANCE OF FACTORS:
+- Total PRO (For): ${stats.proSum} points (${stats.proPercent}%)
+- Total CONTRA (Against): ${stats.contraSum} points (${stats.contraPercent}%)
+- Spread: ${stats.diff > 0 ? `+${stats.diff} in favor of PRO` : stats.diff < 0 ? `${stats.diff} in favor of CONTRA` : 'Parity'}
 
-АРГУМЕНТЫ ЗА (PRO):
+ARGUMENTS FOR (PRO):
 ${prosList}
 
-АРГУМЕНТЫ ПРОТИВ (CONTRA):
+ARGUMENTS AGAINST (CONTRA):
 ${consList}
 `
 }
 
-export const SYSTEM_PROMPT_ANALYST = `Ты — экспертный стратегический советник по принятию решений (Decision Making Coach & Analyst).
-Твоя цель — помочь пользователю беспристрастно, глубоко и структурированно проанализировать дилемму «За и Против».
-Пользователь передает тебе взвешенные аргументы по 10-балльной шкале.
+export const SYSTEM_PROMPT_ANALYST = `You are an elite strategic decision coach and rational analyst.
+Your objective is to help the user objectively, rigorously, and thoroughly evaluate their Pro & Contra dilemma with 1-10 weighted arguments.
 
-Принципы твоего анализа:
-1. Будь предельно конкретным, лаконичным и объективным. Избегай банальной «воды».
-2. Анализируй не только сумму баллов, но и качество и асимметрию рисков (например: обратимые vs необратимые последствия).
-3. Обращай внимание на критические аргументы с максимальными весами (8-10).
-4. Задавай 1-2 глубоких контрольных вопроса, которые помогут пользователю окончательно определиться.
-5. Форматируй ответ красиво с помощью Markdown (заголовки, списки, выделения). Отвечай на русском языке.
+Core analysis principles:
+1. Be concise, sharp, structured, and pragmatic. Cut out generic fluff.
+2. Analyze not only the sum of weights, but also the qualitative asymmetry of risks (e.g. reversible decisions vs. irreversible one-way doors).
+3. Scrutinize high-weight arguments (8-10) to verify whether they reflect ground truth or speculative anxiety.
+4. Conclude with 1-2 probing, high-leverage questions that will give the user decisive clarity.
+5. Format your response cleanly using Markdown (headers, bullet points, bold highlights).
+
+LANGUAGE RULE:
+Detect the language used by the user in their dilemma title, description, or questions, and ALWAYS respond in that same language (e.g., if the user wrote in Russian, respond in natural Russian; if in English, respond in English, etc.).
 `
 
-export const SYSTEM_PROMPT_DEVIL = `Ты — «Адвокат дьявола» (Devil's Advocate) и эксперт по когнитивным искажениям.
-Твоя задача — безжалостно протестировать аргументы пользователя на прочность:
-1. Найти скрытые предположения, принятые на веру без доказательств.
-2. Проверить веса: не завышены ли второстепенные эмоции и не занижены ли критические риски (optimism bias, loss aversion, status quo bias).
-3. Смоделировать наихудший сценарий (Pre-Mortem): «Представь, что прошло 6 месяцев и решение обернулось катастрофой. Что пошло не так?».
-4. Задать 2-3 неудобных, но отрезвляющих вопроса.
-Пиши четко, дерзко, но с максимальной пользой и уважением к пользователю. На русском языке.
+export const SYSTEM_PROMPT_DEVIL = `You are the Devil's Advocate and an expert in cognitive biases.
+Your mission is to relentlessly pressure-test the user's assumptions:
+1. Expose hidden assumptions taken on faith without empirical validation.
+2. Audit weights: identify potential optimism bias, loss aversion, status quo bias, or sunken cost fallacy.
+3. Conduct a Pre-Mortem analysis: "Fast-forward 6 months. This decision failed disastrously. What went wrong?".
+4. Pose 2-3 uncomfortable, sobering, and revealing questions.
+
+LANGUAGE RULE:
+Detect the language used by the user in their dilemma title, description, or questions, and ALWAYS respond in that same language (e.g., if the user wrote in Russian, respond in natural Russian; if in English, respond in English, etc.).
 `
 
 export async function sendChatMessage(
@@ -74,10 +78,10 @@ async function sendGeminiRequest(
   settings: LLMSettings
 ): Promise<string> {
   if (!settings.geminiApiKey) {
-    throw new Error('API ключ Google Gemini не указан. Откройте настройки ⚙️ и введите ваш ключ.')
+    throw new Error('Google Gemini API key is missing. Open Settings ⚙️ to enter your key.')
   }
 
-  const model = settings.geminiModel || 'gemini-2.5-flash'
+  const model = settings.geminiModel || 'gemini-3.5-flash'
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${settings.geminiApiKey}`
 
   // Convert history for Gemini format
@@ -112,14 +116,14 @@ async function sendGeminiRequest(
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}))
-    const msg = errorData.error?.message || `Ошибка HTTP ${response.status}: ${response.statusText}`
+    const msg = errorData.error?.message || `HTTP Error ${response.status}: ${response.statusText}`
     throw new Error(`Gemini API: ${msg}`)
   }
 
   const data = await response.json()
   const candidate = data.candidates?.[0]
   if (!candidate || !candidate.content?.parts?.[0]?.text) {
-    throw new Error('Gemini API не вернул текст ответа.')
+    throw new Error('Gemini API did not return text content.')
   }
 
   return candidate.content.parts[0].text
@@ -132,7 +136,7 @@ async function sendOpenAIRequest(
   settings: LLMSettings
 ): Promise<string> {
   if (!settings.openaiApiKey) {
-    throw new Error('API ключ провайдера не указан. Откройте настройки ⚙️ и введите ваш ключ.')
+    throw new Error('API key is missing. Open Settings ⚙️ to enter your key.')
   }
 
   const baseUrl = (settings.openaiBaseUrl || 'https://api.openai.com/v1').replace(/\/$/, '')
@@ -163,14 +167,14 @@ async function sendOpenAIRequest(
 
   if (!response.ok) {
     const err = await response.json().catch(() => ({}))
-    const msg = err.error?.message || `Ошибка HTTP ${response.status}: ${response.statusText}`
+    const msg = err.error?.message || `HTTP Error ${response.status}: ${response.statusText}`
     throw new Error(`API: ${msg}`)
   }
 
   const data = await response.json()
   const answer = data.choices?.[0]?.message?.content
   if (!answer) {
-    throw new Error('API не вернул текст ответа.')
+    throw new Error('API returned empty response.')
   }
 
   return answer
@@ -181,30 +185,32 @@ export async function brainstormArguments(
   settings: LLMSettings
 ): Promise<BrainstormItem[]> {
   const context = buildDecisionContextPrompt(decision)
-  const prompt = `Ты — опытный аналитик решений.
-На основе представленного решения ниже предложи 3-4 сильных упущенных аргумента «ЗА» (PRO) и 3-4 сильных упущенных аргумента «ПРОТИВ» (CONTRA), о которых пользователь мог не подумать.
+  const prompt = `You are an expert decision analyst.
+Based on the dilemma and current board below, generate 3-4 strong overlooked PRO arguments (For) and 3-4 strong overlooked CONTRA arguments (Against).
 
-ОТВЕТ ДОЛЖЕН БЫТЬ СТРОГО В ФОРМАТЕ JSON (без каких-либо обёрток, markdown-блоков, только валидный JSON массив объектов):
+CRITICAL LANGUAGE RULE: Write the "text" and "rationale" fields in the SAME LANGUAGE that the user used in their dilemma title and description.
+
+RESPONSE FORMAT: Output ONLY a valid JSON array of objects without markdown fences or wrappers:
 [
   {
     "type": "pro" | "contra",
-    "text": "краткая, емкая формулировка аргумента (до 10-12 слов)",
-    "suggestedWeight": целое число от 1 до 10,
-    "rationale": "почему этот аргумент важен (1 предложение)"
+    "text": "concise, sharp formulation of the argument (under 12 words)",
+    "suggestedWeight": integer from 1 to 10,
+    "rationale": "why this factor is significant (1 sentence)"
   }
 ]
 
 ${context}`
 
   let rawResponse = ''
+  const systemInstruction = 'You are a structured argument generation engine. Always return strictly raw valid JSON array.'
   if (settings.provider === 'gemini') {
-    rawResponse = await sendGeminiRequest([], prompt, 'Ты помощник по генерации аргументов. Возвращай исключительно JSON.', settings)
+    rawResponse = await sendGeminiRequest([], prompt, systemInstruction, settings)
   } else {
-    rawResponse = await sendOpenAIRequest([], prompt, 'Ты помощник по генерации аргументов. Возвращай исключительно JSON.', settings)
+    rawResponse = await sendOpenAIRequest([], prompt, systemInstruction, settings)
   }
 
   try {
-    // Clean potential markdown blocks
     let cleanJson = rawResponse.trim()
     if (cleanJson.startsWith('```json')) {
       cleanJson = cleanJson.replace(/^```json/, '').replace(/```$/, '').trim()
@@ -226,29 +232,29 @@ ${context}`
     console.error('Failed to parse brainstorm JSON:', e, rawResponse)
   }
 
-  throw new Error('Не удалось структурировать предложения AI в формат карточек. Попробуйте еще раз.')
+  throw new Error('Failed to parse AI brainstorm recommendations into cards. Please try again.')
 }
 
 export async function testApiConnection(settings: LLMSettings): Promise<{ success: boolean; message: string }> {
   try {
     if (settings.provider === 'gemini') {
-      if (!settings.geminiApiKey) return { success: false, message: 'Введите API ключ Gemini' }
-      const model = settings.geminiModel || 'gemini-2.5-flash'
+      if (!settings.geminiApiKey) return { success: false, message: 'Please enter a Gemini API Key' }
+      const model = settings.geminiModel || 'gemini-3.5-flash'
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${settings.geminiApiKey}`
       const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [{ role: 'user', parts: [{ text: 'Ответь словом "OK"' }] }],
+          contents: [{ role: 'user', parts: [{ text: 'Respond with "OK"' }] }],
         }),
       })
       if (!res.ok) {
         const err = await res.json().catch(() => ({}))
-        return { success: false, message: err.error?.message || `Ошибка ${res.status}` }
+        return { success: false, message: err.error?.message || `Error ${res.status}` }
       }
-      return { success: true, message: 'Соединение с Google Gemini успешно!' }
+      return { success: true, message: 'Google Gemini connection successful!' }
     } else {
-      if (!settings.openaiApiKey) return { success: false, message: 'Введите API ключ' }
+      if (!settings.openaiApiKey) return { success: false, message: 'Please enter an API Key' }
       const baseUrl = (settings.openaiBaseUrl || 'https://api.openai.com/v1').replace(/\/$/, '')
       const model = settings.openaiModel || 'gpt-4o-mini'
       const res = await fetch(`${baseUrl}/chat/completions`, {
@@ -265,11 +271,11 @@ export async function testApiConnection(settings: LLMSettings): Promise<{ succes
       })
       if (!res.ok) {
         const err = await res.json().catch(() => ({}))
-        return { success: false, message: err.error?.message || `Ошибка ${res.status}` }
+        return { success: false, message: err.error?.message || `Error ${res.status}` }
       }
-      return { success: true, message: 'Соединение успешно!' }
+      return { success: true, message: 'API connection successful!' }
     }
   } catch (e: any) {
-    return { success: false, message: e.message || 'Ошибка сети' }
+    return { success: false, message: e.message || 'Network error' }
   }
 }

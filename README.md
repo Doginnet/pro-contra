@@ -1,11 +1,11 @@
-# ⚖️ ProContra — AI-Powered Decision Making Desktop App
+# ⚖️ ProContra — AI-Assisted Weighted Decision Making
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Doginnet/pro-contra/main/public/favicon.svg" width="80" height="80" alt="ProContra Logo" />
 </p>
 
 <p align="center">
-  <b>Минималистичное и быстрое десктопное приложение для взвешивания решений методом «За и Против» с 10-балльной шкалой, интерактивным балансом и встроенным AI-советником.</b>
+  <b>A minimalist, lightning-fast desktop application for weighing difficult decisions using a 10-point Pro & Contra matrix, interactive balance meter, and an embedded AI Decision Advisor powered by Google Gemini (and OpenAI-compatible LLMs).</b>
 </p>
 
 <p align="center">
@@ -20,102 +20,101 @@
 
 ---
 
-## ✨ Ключевые особенности / Features
+## ✨ Key Features
 
-### 1. 📋 Раздельная доска аргументов (Split Board)
-- **Две контрастные колонки**: **PRO (За)** в мягких изумрудных тонах и **CONTRA (Против)** в рубиновых тонах.
-- **Взвешивание 1–10**: плавные ползунки для каждого аргумента с подсказками степени важности (*Незначительный, Умеренный, Важный, Критический*).
-- **Быстрый ввод**: добавление нового довода по нажатию `Enter` с возможностью сразу задать начальный вес.
+### 1. 📋 Two-Sided Split Board
+- **Dedicated Columns**: **PRO (For)** in subtle emerald accents and **CONTRA (Against)** in crimson rose accents.
+- **1–10 Scale Weighting**: Smooth interactive sliders for each argument with qualitative tiers (*Minor, Moderate, Major, Critical*).
+- **Fast Entry**: Add new arguments seamlessly with the `Enter` key while setting initial weight.
 
-### 2. ⚖️ Интерактивная шкала баланса (Tug-of-War Bar)
-- Автоматический расчет суммы баллов и процентного соотношения сил в реальном времени.
-- Визуальная динамическая шкала перетягивания каната с отметкой центра и цветовой индикацией перевеса.
-- Понятный текстовый вердикт с расчетом дельты очков (*например: «🏆 Перевес в пользу «ЗА» на +11 баллов (64% против 36%)»*).
+### 2. ⚖️ Interactive Tug-of-War Balance Bar
+- Real-time score aggregation and percentage split calculations (*e.g., 64% PRO vs 36% CONTRA*).
+- Dynamic visual Tug-of-War bar with a center parity indicator and instant lean visualization.
+- Verbal verdict calculating exact point spreads (*e.g., "🏆 Lean towards PRO by +11 pts (64% vs 36%)"*).
 
 ### 3. 🤖 AI Decision Coach ("ASK AGENT")
-Выдвижная боковая панель справа (Side Drawer), которая позволяет общаться с AI, не закрывая аргументы на доске. Вся информация структурированно передается в модель.
+A non-intrusive right slide-out panel that lets you consult AI without losing sight of your arguments. The entire dilemma context (title, description, arguments, and weights) is formatted and injected into the prompt.
 
-- 📊 **Глубокий анализ**: беспристрастный стратегический аудит, оценка обратимости решений, асимметрии рисков и контрольные вопросы.
-- 💡 **Brainstorm аргументов**: AI анализирует контекст и предлагает упущенные сильные доводы «За» и «Против». Каждый аргумент можно добавить на свою доску в **1 клик**!
-- 😈 **Адвокат дьявола**: жесткий стресс-тест предположений, выявление когнитивных искажений (*loss aversion, optimism bias, status quo bias*) и моделирование сценария провала (Pre-Mortem).
-- 💬 **Эфемерный диалог**: контекстная сессия вопросов и ответов для уточнения деталей. История сохраняется в памяти и легко стирается по кнопке сброса.
+- 📊 **Deep Analysis**: Objective strategic assessment, reversible vs irreversible risk evaluation, and high-leverage closing questions.
+- 💡 **Brainstorm Factors**: AI identifies overlooked blind spots and surfaces candidate reasons. Add any suggested card to your board in **1 click**!
+- 😈 **Devil's Advocate**: Rigorously challenges your assumptions, audits subjective weights, detects cognitive biases (*loss aversion, optimism bias, status quo bias*), and runs a pre-mortem failure simulation.
+- 💬 **Ephemeral Multi-Turn Dialogue**: Ask follow-up questions, introduce new nuances, or discuss trade-offs. The chat session remains active in memory and resets on demand.
+- 🌍 **Multilingual Intelligence**: Write in **any language** (Russian, English, Spanish, German, etc.) — the AI automatically matches your language for all responses and brainstorm cards.
 
-### 4. 🔌 Поддержка LLM провайдеров
-- **Google Gemini**: нативная поддержка моделей нового поколения `gemini-3.5-flash-lite`, `gemini-3.5-flash`, `gemini-3.8-flash`, `gemini-3.5-pro` через бесплатный API-ключ из [Google AI Studio](https://aistudio.google.com/app/apikey).
-- **OpenAI Compatible**: возможность подключить любой совместимый endpoint — **OpenAI**, **OpenRouter**, **Groq**, **DeepSeek** или локальный **Ollama** (`http://localhost:11434/v1`).
-- Встроенная кнопка проверки подключения.
+### 4. 🔌 LLM Provider Flexibility
+- **Google Gemini**: Native integration with Google AI Studio API. Pre-configured with next-gen models: `gemini-3.5-flash-lite`, `gemini-3.5-flash`, `gemini-3.8-flash`, and `gemini-3.5-pro` (or any custom model identifier).
+- **OpenAI Compatible**: Connect any custom endpoint — **OpenAI**, **OpenRouter**, **Groq**, **DeepSeek**, or local **Ollama** (`http://localhost:11434/v1`).
+- Built-in connection tester for instant verification.
 
-### 5. 💾 Сохранение и экспорт
-- Локальное автосохранение всех дилемм в `localStorage`.
-- Модальное окно со списком всех сохраненных решений, датами и переключением в 1 клик.
-- Экспорт полного отчета в отформатированный файл **Markdown** (`.md`).
-- Премиальная тёмная тема в стиле Raycast / Linear с возможностью переключения на светлую.
+### 5. 💾 Persistence & Clean Export
+- Autosaves all dilemmas locally in `localStorage`.
+- Decision manager modal to switch between dilemmas or start fresh.
+- Export full structured decision dossiers to formatted **Markdown** (`.md`).
+- Raycast / Linear-inspired dark aesthetic with instant toggle to light mode.
 
 ---
 
-## 🛠️ Стек технологий / Tech Stack
+## 🛠️ Tech Stack
 
-- **Runtime**: [Electron](https://www.electronjs.org/)
+- **Desktop Shell**: [Electron](https://www.electronjs.org/)
 - **UI Framework**: [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
-- **Bundler**: [Vite 8](https://vite.dev/) + `vite-plugin-electron`
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Build Tool**: [Vite 8](https://vite.dev/) + `vite-plugin-electron`
+- **Styles**: [Tailwind CSS v4](https://tailwindcss.com/)
 - **Icons**: [Lucide React](https://lucide.dev/)
-- **AI Integration**: Google Gemini REST API & OpenAI Chat Completions API
+- **AI Integrations**: Google Gemini REST API & OpenAI Chat Completions API
 
 ---
 
-## 🚀 Быстрый старт / Getting Started
+## 🚀 Getting Started
 
-### Требования
-- [Node.js](https://nodejs.org/) версии 18+ (рекомендуется 20+)
-- npm / pnpm / yarn
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v18+ recommended)
+- npm, pnpm, or yarn
 
-### Установка и запуск
+### Installation & Run
 
-1. Клонируйте репозиторий:
+1. Clone the repository:
    ```bash
    git clone https://github.com/Doginnet/pro-contra.git
    cd pro-contra
    ```
 
-2. Установите зависимости:
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-3. Запустите приложение в режиме разработки:
+3. Launch development mode (Vite + Electron):
    ```bash
    npm run dev
    ```
 
 ---
 
-## 📦 Сборка дистрибутива / Build
+## 📦 Packaging for Production
 
-Для создания релизного исполняемого файла под вашу операционную систему:
+To build a standalone desktop executable for your operating system:
 
 ```bash
-# Компиляция TypeScript и бандлов Vite + Electron
+# Build TypeScript and Vite/Electron bundles
 npm run build
 
-# Создание инсталлятора (Windows exe / macOS dmg / Linux AppImage)
+# Package desktop installer (Windows .exe, macOS .dmg, Linux AppImage)
 npm run package
 ```
 
-Собранные файлы появятся в папке `release/` или `dist/`.
+Built installers will be generated in the `release/` or `dist/` directory.
 
 ---
 
-## ⚙️ Настройка AI ключа
+## ⚙️ Setting Up Your API Key
 
-1. Откройте приложение и нажмите на иконку шестеренки **⚙️ (Настройки)** в правом верхнем углу.
-2. Для Gemini: получите бесплатный API-ключ в [Google AI Studio](https://aistudio.google.com/app/apikey) и вставьте его в поле ключа.
-3. Выберите модель (по умолчанию `gemini-3.5-flash`) или укажите любую свою.
-4. Нажмите **«Проверить соединение»** и **«Сохранить»**.
+1. Launch the app and click the **⚙️ (Settings)** icon in the top right.
+2. For Gemini: Grab a free API key from [Google AI Studio](https://aistudio.google.com/app/apikey) and paste it in.
+3. Click **"Test Connection"** and then **"Save"**.
 
 ---
 
-## 📄 Лицензия / License
+## 📄 License
 
-Проект распространяется под лицензией [MIT](LICENSE).
-Любой вклад, предложения и pull requests приветствуются!
+Distributed under the [MIT](LICENSE) License. Contributions and feature suggestions are welcome!

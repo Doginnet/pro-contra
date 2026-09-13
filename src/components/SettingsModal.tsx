@@ -50,7 +50,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           <div className="flex items-center gap-2">
             <Key className="w-5 h-5 text-violet-600 dark:text-violet-400" />
             <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-              Настройки LLM провайдера
+              LLM Provider Settings
             </h3>
           </div>
           <button
@@ -66,7 +66,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           {/* Provider Selection Tabs */}
           <div>
             <label className="block text-xs font-semibold text-zinc-600 dark:text-zinc-400 mb-2 uppercase tracking-wider">
-              Выберите провайдера
+              Select Provider
             </label>
             <div className="grid grid-cols-2 gap-2">
               <button
@@ -111,7 +111,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     rel="noreferrer"
                     className="text-[11px] text-violet-600 dark:text-violet-400 hover:underline flex items-center gap-1"
                   >
-                    <span>Получить ключ</span>
+                    <span>Get API Key</span>
                     <ExternalLink className="w-3 h-3" />
                   </a>
                 </div>
@@ -136,7 +136,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
               <div>
                 <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
-                  Модель Gemini:
+                  Gemini Model:
                 </label>
                 <input
                   type="text"
@@ -147,10 +147,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 />
                 <div className="flex flex-wrap gap-1.5">
                   {[
-                    { id: 'gemini-3.5-flash-lite', label: '3.5-flash-lite (дешёвая)', desc: 'Экономная' },
-                    { id: 'gemini-3.5-flash', label: '3.5-flash', desc: 'Баланс' },
-                    { id: 'gemini-3.8-flash', label: '3.8-flash', desc: 'Новейшая' },
-                    { id: 'gemini-3.5-pro', label: '3.5-pro', desc: 'Глубокий анализ' },
+                    { id: 'gemini-3.5-flash-lite', label: '3.5-flash-lite (economy)', desc: 'Fast & Cheap' },
+                    { id: 'gemini-3.5-flash', label: '3.5-flash (balanced)', desc: 'Recommended' },
+                    { id: 'gemini-3.8-flash', label: '3.8-flash (latest)', desc: 'Flagship Speed' },
+                    { id: 'gemini-3.5-pro', label: '3.5-pro (deep reasoning)', desc: 'Complex Decisions' },
                   ].map((preset) => (
                     <button
                       key={preset.id}
@@ -185,7 +185,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   className="w-full px-3 py-2 text-xs bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-violet-500 font-mono"
                 />
                 <span className="text-[10px] text-zinc-400 mt-1 block">
-                  Для локального Ollama: http://localhost:11434/v1 • Для OpenRouter: https://openrouter.ai/api/v1
+                  For local Ollama: http://localhost:11434/v1 • For OpenRouter: https://openrouter.ai/api/v1
                 </span>
               </div>
 
@@ -213,13 +213,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
               <div>
                 <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
-                  Название модели (Model ID):
+                  Model Identifier (Model ID):
                 </label>
                 <input
                   type="text"
                   value={form.openaiModel}
                   onChange={(e) => setForm({ ...form, openaiModel: e.target.value })}
-                  placeholder="gpt-4o-mini или deepseek-chat или llama3"
+                  placeholder="gpt-4o-mini or deepseek-chat or llama3"
                   className="w-full px-3 py-2 text-xs bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-violet-500 font-mono"
                 />
               </div>
@@ -253,7 +253,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors disabled:opacity-50"
             >
               {isTesting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : null}
-              <span>Проверить соединение</span>
+              <span>Test Connection</span>
             </button>
 
             <div className="flex items-center gap-2">
@@ -262,13 +262,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 onClick={onClose}
                 className="px-3 py-2 rounded-xl text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
               >
-                Отмена
+                Cancel
               </button>
               <button
                 type="submit"
                 className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-violet-600 hover:bg-violet-500 shadow-sm transition-all"
               >
-                Сохранить
+                Save
               </button>
             </div>
           </div>

@@ -43,19 +43,19 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={onOpenDecisionsList}
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700"
-            title="Открыть список решений"
+            title="Open saved decisions list"
           >
             <FolderKanban className="w-3.5 h-3.5" />
-            <span>Решения ({savedDecisionsCount})</span>
+            <span>Decisions ({savedDecisionsCount})</span>
           </button>
 
           <button
             onClick={onNewDecision}
             className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-            title="Создать новое решение"
+            title="Create a new decision"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>Новое</span>
+            <span>New</span>
           </button>
         </div>
 
@@ -64,16 +64,16 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={onExportMarkdown}
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors border border-zinc-200 dark:border-zinc-800"
-            title="Экспортировать отчет в Markdown"
+            title="Export summary to Markdown"
           >
             <Download className="w-3.5 h-3.5" />
-            <span>Экспорт MD</span>
+            <span>Export MD</span>
           </button>
 
           <button
             onClick={onToggleAiDrawer}
             className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 shadow-sm shadow-indigo-500/20 active:scale-98 transition-all"
-            title="Открыть AI Ассистента"
+            title="Open AI Decision Advisor"
           >
             <Sparkles className="w-3.5 h-3.5 animate-pulse" />
             <span>ASK AGENT</span>
@@ -82,7 +82,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={onToggleTheme}
             className="p-1.5 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-            title={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
+            title={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
           >
             {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
@@ -90,7 +90,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={onOpenSettings}
             className="p-1.5 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-            title="Настройки LLM и API ключи"
+            title="LLM & API Settings"
           >
             <SettingsIcon className="w-4 h-4" />
           </button>
@@ -103,7 +103,7 @@ export const Header: React.FC<HeaderProps> = ({
           type="text"
           value={decision.title}
           onChange={(e) => onUpdateTitle(e.target.value)}
-          placeholder="Сформулируйте ваш вопрос или дилемму..."
+          placeholder="State your dilemma, question, or key decision..."
           className="w-full text-xl font-semibold bg-transparent text-zinc-900 dark:text-zinc-50 placeholder-zinc-400 dark:placeholder-zinc-600 focus:outline-none border-b border-transparent focus:border-zinc-300 dark:focus:border-zinc-700 py-0.5 transition-colors"
         />
 
@@ -111,7 +111,7 @@ export const Header: React.FC<HeaderProps> = ({
           rows={1}
           value={decision.description}
           onChange={(e) => onUpdateDescription(e.target.value)}
-          placeholder="Опишите контекст, вводные условия или ограничения решения (необязательно)..."
+          placeholder="Describe context, constraints, trade-offs, or goals (optional)..."
           className="w-full text-xs text-zinc-600 dark:text-zinc-400 bg-transparent placeholder-zinc-400 dark:placeholder-zinc-600 focus:outline-none resize-none focus:text-zinc-900 dark:focus:text-zinc-200 transition-colors"
           onInput={(e) => {
             const target = e.target as HTMLTextAreaElement

@@ -23,10 +23,10 @@ export const ArgumentCard: React.FC<ArgumentCardProps> = ({
 
   // Helper label based on weight
   const getWeightLabel = (w: number) => {
-    if (w <= 3) return 'Незначительный'
-    if (w <= 6) return 'Умеренный'
-    if (w <= 8) return 'Важный'
-    return 'Критический'
+    if (w <= 3) return 'Minor'
+    if (w <= 6) return 'Moderate'
+    if (w <= 8) return 'Major'
+    return 'Critical'
   }
 
   return (
@@ -49,7 +49,7 @@ export const ArgumentCard: React.FC<ArgumentCardProps> = ({
             type="text"
             value={argument.text}
             onChange={(e) => onUpdateText(argument.id, e.target.value)}
-            placeholder={isPro ? 'Опишите довод "ЗА"...' : 'Опишите довод "ПРОТИВ"...'}
+            placeholder={isPro ? 'Describe reason FOR (Pro)...' : 'Describe reason AGAINST (Contra)...'}
             className="w-full bg-transparent text-sm text-zinc-800 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-600 focus:outline-none"
           />
 
@@ -90,7 +90,7 @@ export const ArgumentCard: React.FC<ArgumentCardProps> = ({
         <button
           onClick={() => onDelete(argument.id)}
           className="opacity-0 group-hover:opacity-100 p-1 text-zinc-400 hover:text-rose-500 dark:text-zinc-500 dark:hover:text-rose-400 rounded transition-all"
-          title="Удалить аргумент"
+          title="Delete argument"
         >
           <Trash2 className="w-3.5 h-3.5" />
         </button>

@@ -131,7 +131,7 @@ export function App() {
   }
 
   const handleClearBoard = () => {
-    if (confirm('Очистить все аргументы "За" и "Против" для этой дилеммы?')) {
+    if (confirm('Clear all PRO and CONTRA arguments for this decision?')) {
       updateCurrentDecision((d) => ({
         ...d,
         pros: [],
